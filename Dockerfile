@@ -11,12 +11,16 @@ RUN curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd
 RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
 RUN rm google-chrome-stable_current_amd64.deb
 
+RUN apt-get install -y libgconf-2-4 gdb libstdc++6 fonts-droid-fallback lib32stdc++6 python3
+RUN apt-get clean
+
 
 #Set up new User
 
 RUN useradd -ms /bin/bash developer
 USER developer
 WORKDIR /home/developer
+
 
 RUN mkdir -p Android/sdk
 ENV ANDROID_SDK_ROOT /home/developer/Android/sdk
@@ -42,3 +46,19 @@ RUN flutter doctor --android-licenses
 
 # Run basic check to download Dark SDK
 RUN flutter doctor
+
+
+
+# Copy files to container and build
+RUN mkdir app/
+COPY . /app/
+WORKDIR /app/
+RUN flutter build web
+
+# Record the exposed port
+EXPOSE 5000
+
+# make server startup script executable and start the web server
+RUN ["chmod", "+x", "/app/server/server.sh"]
+
+ENTRYPOINT [ "/app/server/server.sh"]
