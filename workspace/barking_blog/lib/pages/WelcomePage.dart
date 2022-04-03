@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'SignUpPage.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key, required this.title}) : super(key: key);
@@ -68,14 +69,14 @@ class _WelcomePageState extends State<WelcomePage> with
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Colors.white,
               Colors.green,
             ],
-            begin: const FractionalOffset(0.0, 1.0),
-            end: const FractionalOffset(0.0, 1.0),
+            begin: FractionalOffset(0.0, 1.0),
+            end: FractionalOffset(0.0, 1.0),
             stops: [0.0, 1.0],
             tileMode: TileMode.repeated,
           )
@@ -126,10 +127,22 @@ class _WelcomePageState extends State<WelcomePage> with
                   ),
                 ),
                 SizedBox(height: 20,),
-                BoxContainer("assets/images/facebookLogo.png", "Log wit Facebook"),
+                BoxContainer(
+                    "assets/images/facebookLogo.png",
+                    "Log wit Facebook",
+                    null),
 
                 SizedBox(height: 20,),
-                BoxContainer("assets/images/googleLogo.png", "Log wit Google"),
+                BoxContainer(
+                    "assets/images/googleLogo.png",
+                    "Log wit Google",
+                    null),
+
+                SizedBox(height: 20,),
+                BoxContainer(
+                    "assets/images/emailLogo.png",
+                    "Log wit Email",
+                    onEmailClick),
 
 
               ],
@@ -145,27 +158,35 @@ class _WelcomePageState extends State<WelcomePage> with
     );
   }
 
-  Widget BoxContainer(String pathToImage, String textOfCard)
+  onEmailClick(){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpPage(),),);
+  }
+
+  Widget BoxContainer(String pathToImage, String textOfCard, onClick)
   {
-    return Container(
-      height: 60,
-      width: MediaQuery.of(context).size.width / 1.1,
-      child: Card(
-        child: Row(
-          children: [
-            Image.asset(pathToImage, height: 40, width: 40,),
-            SizedBox(width: 20,),
-            Text(
-              textOfCard,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-              ),
-            )
-          ],
+    return InkWell(
+      onTap: onClick,
+      child: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width / 1.1,
+        child: Card(
+          child: Row(
+            children: [
+              Image.asset(pathToImage, height: 40, width: 40,),
+              SizedBox(width: 20,),
+              Text(
+                textOfCard,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
 }
+
