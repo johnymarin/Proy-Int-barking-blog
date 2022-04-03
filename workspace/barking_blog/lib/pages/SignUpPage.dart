@@ -1,3 +1,4 @@
+import 'package:barking_blog/NetworkHandler.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -10,6 +11,8 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool vis=true;
   final _globalkey = GlobalKey<FormState>();
+  NetworkHandler networkHandler = NetworkHandler();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 InkWell(
                   onTap: (){
                     if(_globalkey.currentState!.validate()){
-                      print("validated");
+                      networkHandler.get("articles/r");
                     }
                   },
                   child: Container(
