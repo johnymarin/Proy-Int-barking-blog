@@ -8,6 +8,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool vis=true;
+  final _globalkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,41 +28,51 @@ class _SignUpPageState extends State<SignUpPage> {
               tileMode: TileMode.repeated,
             )
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Sign up with email",
-                style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-                ),
-              ),
-              SizedBox(height: 20,),
-              usernameTextField(),
-              emailTextField(),
-              passwordTextField(),
-              SizedBox(height: 20,),
-              Container(
-                width: 150,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.green
-                ),
-                child: Center(
-                  child: Text(
-                      "Sign Up",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold
-                    ),
+          child: Form(
+            key: _globalkey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Sign up with email",
+                  style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
                   ),
                 ),
-              )
-            ],
+                SizedBox(height: 20,),
+                usernameTextField(),
+                emailTextField(),
+                passwordTextField(),
+                SizedBox(height: 20,),
+                InkWell(
+                  onTap: (){
+                    if(_globalkey.currentState!.validate()){
+                      print("validated");
+                    }
+                  },
+                  child: Container(
+                    width: 150,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.green
+                    ),
+                    child: Center(
+                      child: Text(
+                          "Sign Up",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
     );
@@ -73,6 +85,12 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           Text("User Name"),
           TextFormField(
+
+            validator: (value){
+              if(value!.isEmpty)
+                return"Userneame cant be Empty";
+              return null;
+            },
             decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -93,6 +111,13 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           Text("email"),
           TextFormField(
+            validator: (value){
+              if(value!.isEmpty)
+                return"email cant be Empty";
+              if (!value.contains("@"))
+                return "email must contain 'at'";
+              return null;
+            },
             decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -113,7 +138,25 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           Text("Password"),
           TextFormField(
+            validator:  (value){
+              if(value!.isEmpty)
+                return"Password cant be Empty";
+              if(value.length <=8)
+                return "Password lenght must be 8";
+              return null;
+            },
+            obscureText: vis,
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(
+                  vis?Icons.visibility_off:Icons.visibility,
+                ),
+                onPressed: (){
+                  setState(() {
+                    vis = !vis;
+                  });
+                },
+              ),
               helperText: "Password lenthshould have 8 characters",
               helperStyle: TextStyle(
                 fontSize: 16,
@@ -130,5 +173,7 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
+
 
 }
