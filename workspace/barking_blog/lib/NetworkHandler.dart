@@ -2,7 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
 class NetworkHandler {
-  String baseurl = "http://192.168.1.55:5000/";
+//  String baseurl = "http://192.168.1.55:5000/";
+  String baseurl = "http://localhost:5000/";
   var logger = Logger();
 
   Future<dynamic> get(String getUrl) async {
